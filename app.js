@@ -8,18 +8,18 @@ function gameBoard(px,po) {
     const makeChange = function(i) {
         if (board[i] == 0) {
             board[i] = players[turn].sign;
+            toggleTurn();
             if (checkWin() != false) {
-                alert(`${checkWin()} Wins`)
-                checkWin() == 'X' ? players[0].score++ : players[1].score++
-                reset()
+                alert(`${checkWin()} Wins`);
+                checkWin() == 'X' ? players[0].score++ : players[1].score++;
+                reset();
             } else if (checkWin() == false && checkTie()) {
-                alert('Tie')
-                reset()
+                alert('Tie');
+                reset();
             }
             console.log(`${board[0]}|${board[1]}|${board[2]}`)
             console.log(`${board[3]}|${board[4]}|${board[5]}`)
             console.log(`${board[6]}|${board[7]}|${board[8]}`)
-            toggleTurn()
         }
     };
     const checkWin = function(){
@@ -56,11 +56,39 @@ function gameBoard(px,po) {
         return true
     };
     const reset = function(){
-        board = [0,0,0,0,0,0,0,0,0];
+        for (let i = 0; i < board.length; i++) {
+            board[i] = 0;
+        }
         turn = 0;
     };
 
     return {reset, makeChange, board, players, turn}
 };
 
-const game = gameBoard('ali', 'mmd');
+(function(){
+    document.querySelector('dialog').showModal();
+    document.querySelector('form').addEventListener('submit', () => {
+        const px = document.getElementById('px').value;
+        const po = document.getElementById('po').value;
+        let game = gameBoard(px, po);
+        const Cells = document.querySelectorAll('.gameCell');
+        scoreBoard = document.querySelectorAll('.score');
+        const loader = function(){
+            Cells.forEach(Cell => {
+                Cell.innerHTML = game.board[Cell.id] != 0 ? game.board[Cell.id] : '';
+            });
+            scoreBoard[0].innerHTML = `${px} : ${game.players[0].score}`;
+            scoreBoard[1].innerHTML = `${po} : ${game.players[1].score}`;
+        }
+        loader();
+        document.querySelector('.gameBoard').addEventListener('click', (e) => {
+            game.makeChange(e.target.id);
+            loader();
+        })
+        
+        document.querySelector('.reset').addEventListener('click', () => {
+            game.reset();
+            loader();
+        })
+    })
+})();

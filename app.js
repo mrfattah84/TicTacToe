@@ -1,51 +1,51 @@
-let gameBoard = {
-    board: [0,0,0,0,0,0,0,0,0],
-    players : [{name : 'ali', sign : 'X', score : 0},{name : 'mmd', sign : 'O', score : 0}],
-    turn : 0,
-    toggleTurn : function(){
-        this.turn =  this.turn == 0 ? 1 : 0;
-    },
-    makeChange : function(i) {
-        if (this.board[i] == 0) {
-            this.board[i] = this.players[this.turn].sign;
-            if (this.checkWin() != false) {
-                console.log(`${this.checkWin()} Wins`)
-                this.checkWin() == 'X' ? this.players[0].score++ : this.players[1].score++
-                this.reset()
-            } else if (this.checkWin() == false && this.checkTie()) {
-                console.log('Tie')
-                this.reset()
+function gameBoard(px,po) {
+    let board = [0,0,0,0,0,0,0,0,0];
+    let players = [{name : px, sign : 'X', score : 0},{name : po, sign : 'O', score : 0}];
+    let turn = 0;
+    const toggleTurn = function(){
+        turn =  turn == 0 ? 1 : 0;
+    };
+    const makeChange = function(i) {
+        if (board[i] == 0) {
+            board[i] = players[turn].sign;
+            if (checkWin() != false) {
+                alert(`${checkWin()} Wins`)
+                checkWin() == 'X' ? players[0].score++ : players[1].score++
+                reset()
+            } else if (checkWin() == false && checkTie()) {
+                alert('Tie')
+                reset()
             }
-            console.log(`${this.board[0]}|${this.board[1]}|${this.board[2]}`)
-            console.log(`${this.board[3]}|${this.board[4]}|${this.board[5]}`)
-            console.log(`${this.board[6]}|${this.board[7]}|${this.board[8]}`)
-            this.toggleTurn()
+            console.log(`${board[0]}|${board[1]}|${board[2]}`)
+            console.log(`${board[3]}|${board[4]}|${board[5]}`)
+            console.log(`${board[6]}|${board[7]}|${board[8]}`)
+            toggleTurn()
         }
-    },
-    checkWin : function(){
-        if (this.board[0] == this.board[1] && this.board[1] == this.board[2] && this.board[0] != 0) {
-            return this.board[0];
-        } else if (this.board[3] == this.board[4] && this.board[4] == this.board[5] && this.board[3] != 0) {
-            return this.board[3];
-        } else if (this.board[6] == this.board[7] && this.board[7] == this.board[8] && this.board[6] != 0) {
-            return this.board[6];
-        } else if (this.board[0] == this.board[3] && this.board[3] == this.board[6] && this.board[0] != 0) {
-            return this.board[0];
-        } else if (this.board[1] == this.board[4] && this.board[4] == this.board[7] && this.board[1] != 0) {
-            return this.board[1];
-        } else if (this.board[2] == this.board[5] && this.board[5] == this.board[8] && this.board[2] != 0) {
-            return this.board[2];
-        } else if (this.board[0] == this.board[4] && this.board[4] == this.board[8] && this.board[0] != 0) {
-            return this.board[0];
-        } else if (this.board[2] == this.board[4] && this.board[4] == this.board[6] && this.board[2] != 0) {
-            return this.board[2];
+    };
+    const checkWin = function(){
+        if (board[0] == board[1] && board[1] == board[2] && board[0] != 0) {
+            return board[0];
+        } else if (board[3] == board[4] && board[4] == board[5] && board[3] != 0) {
+            return board[3];
+        } else if (board[6] == board[7] && board[7] == board[8] && board[6] != 0) {
+            return board[6];
+        } else if (board[0] == board[3] && board[3] == board[6] && board[0] != 0) {
+            return board[0];
+        } else if (board[1] == board[4] && board[4] == board[7] && board[1] != 0) {
+            return board[1];
+        } else if (board[2] == board[5] && board[5] == board[8] && board[2] != 0) {
+            return board[2];
+        } else if (board[0] == board[4] && board[4] == board[8] && board[0] != 0) {
+            return board[0];
+        } else if (board[2] == board[4] && board[4] == board[6] && board[2] != 0) {
+            return board[2];
         } else {
             return false;
         }
-    },
-    checkTie : function(){
+    };
+    const checkTie = function(){
         try{
-            this.board.forEach(place => {
+            board.forEach(place => {
                 if (place == 0) {
                     throw new Error("board not comlited")
                 }
@@ -54,9 +54,13 @@ let gameBoard = {
             return false;
         }
         return true
-    },
-    reset : function(){
-        this.board = [0,0,0,0,0,0,0,0,0];
-        this.turn = 0;
-    }
+    };
+    const reset = function(){
+        board = [0,0,0,0,0,0,0,0,0];
+        turn = 0;
+    };
+
+    return {reset, makeChange, board, players, turn}
 };
+
+const game = gameBoard('ali', 'mmd');
